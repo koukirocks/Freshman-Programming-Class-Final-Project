@@ -1,0 +1,7 @@
+# cube x y z sx sy sz
+player_position 0 50 200
+player_size 80 80
+# instruction "text" text_x text_y text_size "button" button_x button_y button_width button_height
+instruction "Use the arrow keys or WASD to move.\nPress Next to continue." 100 100 60 "Next" 1280 360 500 150
+cube -2000 -2000 0 4000 4000 200 # comments can also follow an entry
+finish 300 0 300 100 1000 100
