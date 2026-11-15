@@ -2,6 +2,9 @@
 
 #include <SFML/Graphics.hpp>
 
+#include <algorithm>
+#include "UITheme.hpp"
+
 #include <stdexcept>
 
 InstructState::InstructState(
@@ -11,7 +14,7 @@ InstructState::InstructState(
 ):
 State(assets,stateRequests),
 assets(assets),
-text(assets.getFont("assets/fonts/arial.ttf"),"",1),
+text(assets.getFont("assets/fonts/NotoSansSC.ttf"),"",1),
 currentInstruction(0)
 {
     const auto levelFiles = getLevelFiles();
@@ -21,8 +24,9 @@ currentInstruction(0)
     const LevelData level = loadLevel(levelFiles[levelIndex]);
     instructions = level.instructions;
 
-    BG = sf::RectangleShape({2560,1440});
+    BG = sf::RectangleShape(Display::virtualResolution);
     BG.setFillColor(sf::Color(0,0,0,100));
+    panel = UITheme::makePanel({24,20}, {1232,680});
 
     showInstruction();
 }
@@ -30,26 +34,30 @@ currentInstruction(0)
 void InstructState::showInstruction()
 {
     const LevelInstructionData& instruction = instructions[currentInstruction];
-    text.setString(instruction.text);
+    text.setString(sf::String::fromUtf8(
+        instruction.text.begin(),
+        instruction.text.end()
+    ));
     text.setCharacterSize(instruction.textSize);
-    text.setFillColor(sf::Color::White);
+    text.setFillColor(UITheme::text);
+    text.setStyle(sf::Text::Bold);
     text.setPosition(instruction.textPosition);
 
     buttons.clear();
     Button nextButton(
         sf::RectangleShape(),
-        sf::Color(255,255,0),
-        sf::Color(0,255,255),
+        UITheme::accentHover,
+        UITheme::accent,
         sf::Text(
-            assets.getFont("assets/fonts/arial.ttf"),
+            assets.getFont("assets/fonts/NotoSansSC.ttf"),
             instruction.buttonText,
-            instruction.textSize
+            std::min(instruction.textSize, 30u)
         ),
         assets
     );
     nextButton.setPosition(instruction.buttonPosition);
     nextButton.setSize(instruction.buttonSize);
-    nextButton.setTextColor(sf::Color(0,0,0));
+    nextButton.setTextColor(UITheme::buttonText);
     buttons.push_back(nextButton);
 }
 
@@ -63,8 +71,7 @@ void InstructState::processEvent(const std::optional<sf::Event>& event, sf::Rend
         if (mousePressed->button != sf::Mouse::Button::Left)
             return;
 
-        const auto mousePositioni = sf::Mouse::getPosition(window);
-        const sf::Vector2f mousePosition(mousePositioni.x,mousePositioni.y);
+        const sf::Vector2f mousePosition = Display::mousePosition(window);
         if (buttons[0].isHovered(mousePosition))
         {
             if (++currentInstruction < instructions.size())
@@ -88,14 +95,14 @@ void InstructState::processEvent(const std::optional<sf::Event>& event, sf::Rend
 
 void InstructState::update(float dt,sf::RenderWindow& window)
 {
-    const auto mousePositioni = sf::Mouse::getPosition(window);
-    const sf::Vector2f mousePosition(mousePositioni.x,mousePositioni.y);
+    const sf::Vector2f mousePosition = Display::mousePosition(window);
     for (auto& button:buttons) button.update(mousePosition);
 }
 
 void InstructState::render(sf::RenderWindow& window)
 {
     window.draw(BG);
+    window.draw(panel);
     window.draw(text);
     for (auto& button:buttons) button.render(window);
 }

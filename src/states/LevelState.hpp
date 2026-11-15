@@ -20,6 +20,15 @@ private:
     bool cameraInitialized;
     int levelIndex;
     bool instructionsShown;
+    bool restartRequested;
+    bool deathPending;
+    float deathElapsed;
+    float fadeInElapsed;
+    bool cameraFollowPending;
+    float levelTime;
+    int earnedStars;
+    sf::RectangleShape timerPanel;
+    sf::Text timerText;
 
 public:
     LevelState(AssetManager& assets,std::queue<StateRequest>& stateRequests,int levelIndex);

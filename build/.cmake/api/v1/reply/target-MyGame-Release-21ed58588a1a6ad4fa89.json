@@ -2,10 +2,10 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "RelWithDebInfo/MyGame.exe"
+			"path" : "Release/MyGame.exe"
 		},
 		{
-			"path" : "RelWithDebInfo/MyGame.pdb"
+			"path" : "Release/MyGame.pdb"
 		}
 	],
 	"backtrace" : 1,
@@ -98,7 +98,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "/DWIN32 /D_WINDOWS /EHsc /Zi /O2 /Ob1 /DNDEBUG -std:c++17 -MD"
+					"fragment" : "/DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -std:c++17 -MD"
 				}
 			],
 			"defines" : 
@@ -164,10 +164,6 @@
 		},
 		{
 			"backtrace" : 2,
-			"id" : "sfml-system::@8cb1db2982443611e568"
-		},
-		{
-			"backtrace" : 2,
 			"id" : "freetype::@d06f9f5ffc3cc0b4bd77"
 		},
 		{
@@ -180,6 +176,10 @@
 		},
 		{
 			"id" : "ZERO_CHECK::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "sfml-system::@8cb1db2982443611e568"
 		}
 	],
 	"id" : "MyGame::@6890427a1f51a3e7e1df",
@@ -188,11 +188,11 @@
 		"commandFragments" : 
 		[
 			{
-				"fragment" : "/DWIN32 /D_WINDOWS /EHsc /Zi /O2 /Ob1 /DNDEBUG -MD",
+				"fragment" : "/DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -MD",
 				"role" : "flags"
 			},
 			{
-				"fragment" : "/machine:x64 /debug /INCREMENTAL",
+				"fragment" : "/machine:x64 /INCREMENTAL:NO",
 				"role" : "flags"
 			},
 			{
@@ -201,17 +201,17 @@
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "_deps\\sfml-build\\lib\\RelWithDebInfo\\sfml-graphics-s.lib",
+				"fragment" : "_deps\\sfml-build\\lib\\Release\\sfml-graphics-s.lib",
 				"role" : "libraries"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "_deps\\sfml-build\\lib\\RelWithDebInfo\\sfml-window-s.lib",
+				"fragment" : "_deps\\sfml-build\\lib\\Release\\sfml-window-s.lib",
 				"role" : "libraries"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "_deps\\sfml-build\\lib\\RelWithDebInfo\\sfml-system-s.lib",
+				"fragment" : "_deps\\sfml-build\\lib\\Release\\sfml-system-s.lib",
 				"role" : "libraries"
 			},
 			{
@@ -231,12 +231,12 @@
 			},
 			{
 				"backtrace" : 7,
-				"fragment" : "_deps\\sfml-build\\lib\\RelWithDebInfo\\harfbuzz.lib",
+				"fragment" : "_deps\\sfml-build\\lib\\Release\\harfbuzz.lib",
 				"role" : "libraries"
 			},
 			{
 				"backtrace" : 7,
-				"fragment" : "_deps\\sfml-build\\lib\\RelWithDebInfo\\freetype.lib",
+				"fragment" : "_deps\\sfml-build\\lib\\Release\\freetype.lib",
 				"role" : "libraries"
 			},
 			{

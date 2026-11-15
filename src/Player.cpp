@@ -3,8 +3,9 @@
 #include <cstring>
 
 Player::Player(AssetManager &assets)
-: text(assets.getFont("assets/fonts/arial.ttf"))
+: text(assets.getFont("assets/fonts/NotoSansSC.ttf"))
 {
+    text.setStyle(sf::Text::Bold);
     shape.setSize({50.f, 50.f});
     shape.setPosition({40.f, 30.f});
 }

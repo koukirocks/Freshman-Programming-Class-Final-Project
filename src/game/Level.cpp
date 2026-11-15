@@ -106,6 +106,7 @@ LevelData loadLevel(const std::filesystem::path& path)
     bool hasPlayerPosition = false;
     bool hasPlayerSize = false;
     bool hasFinish = false;
+    bool hasStarTimes = false;
     std::string name;
 
     while (file >> name)
@@ -139,6 +140,11 @@ LevelData loadLevel(const std::filesystem::path& path)
             decodeEscapes(instruction.text);
             level.instructions.push_back(std::move(instruction));
         }
+        else if (name == "star_times")
+        {
+            file >> level.starTimes[0] >> level.starTimes[1] >> level.starTimes[2];
+            hasStarTimes = true;
+        }
         else if (name == "cube" || name == "finish")
         {
             LevelCubeData cube;
@@ -165,5 +171,11 @@ LevelData loadLevel(const std::filesystem::path& path)
     require(hasPlayerSize,"Level is missing player_size: " + path.string());
     require(hasFinish,"Level is missing finish: " + path.string());
     require(!level.instructions.empty(),"Level is missing instruction: " + path.string());
+    require(hasStarTimes,"Level is missing star_times: " + path.string());
+    require(
+        level.starTimes[0] <= level.starTimes[1]
+            && level.starTimes[1] <= level.starTimes[2],
+        "Level star_times must be in ascending order: " + path.string()
+    );
     return level;
 }

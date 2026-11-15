@@ -55,14 +55,24 @@ void StateStack::update(float dt,sf::RenderWindow& window)
                 break;
             }
             case StateRequest::Type::Push: {
-                push(createState(request.stateID,request.levelIndex));
+                push(createState(
+                    request.stateID,
+                    request.levelIndex,
+                    request.completionTime,
+                    request.stars
+                ));
                 break;
             }
         }
     }
 }
 
-std::unique_ptr<State> StateStack::createState(StateID stateID,int levelIndex) {
+std::unique_ptr<State> StateStack::createState(
+    StateID stateID,
+    int levelIndex,
+    float completionTime,
+    int stars
+) {
     switch(stateID)
     {
         case StateID::Menu: {
@@ -75,7 +85,13 @@ std::unique_ptr<State> StateStack::createState(StateID stateID,int levelIndex) {
             return std::make_unique<LevelState>(assets,stateRequests,levelIndex);
         }
         case StateID::LevelComplete: {
-            return std::make_unique<LevelCompleteState>(assets,stateRequests);
+            return std::make_unique<LevelCompleteState>(
+                assets,
+                stateRequests,
+                levelIndex,
+                completionTime,
+                stars
+            );
         }
         case StateID::Pause: {
             return std::make_unique<PauseState>(assets,stateRequests);

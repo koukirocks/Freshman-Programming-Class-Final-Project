@@ -13,6 +13,7 @@ private:
     sf::Text text;
     std::vector<Button> buttons;
     sf::RectangleShape BG;
+    sf::RectangleShape panel;
 
 public:
     PauseState(AssetManager& assets,std::queue<StateRequest>& stateRequests);

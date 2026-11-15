@@ -12,7 +12,7 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "_deps/sfml-build/lib/RelWithDebInfo/sfml-graphics-s.lib"
+			"path" : "_deps/sfml-build/lib/MinSizeRel/sfml-graphics-s.lib"
 		}
 	],
 	"backtrace" : 2,
@@ -184,7 +184,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "/DWIN32 /D_WINDOWS /EHsc /Zi /O2 /Ob1 /DNDEBUG -std:c++17 -MD"
+					"fragment" : "/DWIN32 /D_WINDOWS /EHsc /O1 /Ob1 /DNDEBUG -std:c++17 -MD"
 				},
 				{
 					"backtrace" : 8,
@@ -405,10 +405,6 @@
 			"id" : "sfml-window::@5730451e331e3690ae65"
 		},
 		{
-			"backtrace" : 4,
-			"id" : "sfml-system::@8cb1db2982443611e568"
-		},
-		{
 			"backtrace" : 5,
 			"id" : "freetype::@d06f9f5ffc3cc0b4bd77"
 		},
@@ -421,6 +417,10 @@
 		},
 		{
 			"id" : "ZERO_CHECK::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 4,
+			"id" : "sfml-system::@8cb1db2982443611e568"
 		}
 	],
 	"folder" : 

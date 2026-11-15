@@ -16,6 +16,7 @@ private:
     std::vector<LevelInstructionData> instructions;
     std::size_t currentInstruction;
     sf::RectangleShape BG;
+    sf::RectangleShape panel;
 
     void showInstruction();
 

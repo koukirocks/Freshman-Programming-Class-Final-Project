@@ -11,10 +11,10 @@ public:
     std::vector<Button> buttons;
     std::vector<sf::Text> texts;
     std::vector<sf::Sprite> sprites;
+    sf::RectangleShape panel;
 public:
     MenuState(AssetManager& assets,std::queue<StateRequest> &stateRequests);
     void processEvent(const std::optional<sf::Event>& event, sf::RenderWindow& window) override;
     void update(float dt,sf::RenderWindow& window) override;
     void render(sf::RenderWindow& window) override;
 };
-

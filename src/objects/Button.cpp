@@ -17,7 +17,7 @@ Button::Button(
     normalColor(_normalColor),
     text(_text)
 {
-    ;
+    text.setStyle(sf::Text::Bold);
 }
 
 struct SisHovered {
@@ -68,13 +68,11 @@ void Button::setPosition(sf::Vector2f position)
         shape
     );
 
-    sf::FloatRect textBounds = text.getLocalBounds();
-
+    const sf::FloatRect textBounds = text.getLocalBounds();
     text.setOrigin({
         textBounds.position.x + textBounds.size.x / 2.f,
         textBounds.position.y + textBounds.size.y / 2.f
     });
-
     text.setPosition({
         bounds.position.x + bounds.size.x / 2.f,
         bounds.position.y + bounds.size.y / 2.f
@@ -100,6 +98,33 @@ void Button::setSize(sf::Vector2f size)
         SsetSize{size},
         shape
     );
+
+    const sf::FloatRect bounds = std::visit(
+        [&](auto& value) {
+            return value.getGlobalBounds();
+        },
+        shape
+    );
+
+    constexpr float horizontalPadding = 24.f;
+    constexpr float verticalPadding = 16.f;
+    constexpr unsigned int minimumTextSize = 10;
+    while (text.getCharacterSize() > minimumTextSize
+        && (text.getLocalBounds().size.x > size.x - horizontalPadding
+            || text.getLocalBounds().size.y > size.y - verticalPadding))
+    {
+        text.setCharacterSize(text.getCharacterSize() - 1);
+    }
+
+    const sf::FloatRect textBounds = text.getLocalBounds();
+    text.setOrigin({
+        textBounds.position.x + textBounds.size.x / 2.f,
+        textBounds.position.y + textBounds.size.y / 2.f
+    });
+    text.setPosition({
+        bounds.position.x + bounds.size.x / 2.f,
+        bounds.position.y + bounds.size.y / 2.f
+    });
 }
 
 struct SsetRadius {

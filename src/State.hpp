@@ -1,4 +1,5 @@
 #pragma once
+#include "Display.hpp"
 #include "AssetManager.hpp"
 
 #include <SFML/Graphics.hpp>
@@ -12,8 +13,8 @@ enum class StateID {
     LevelSelect,
     Level,
     LevelComplete,
-    Pause,
-    Instruct
+    Instruct,
+    Pause
 };
 
 struct StateRequest {
@@ -22,15 +23,25 @@ struct StateRequest {
         Pop,
         Push
     };
-    StateRequest(Type _type,StateID _stateID,int _levelIndex = -1):
+    StateRequest(
+        Type _type,
+        StateID _stateID,
+        int _levelIndex = -1,
+        float _completionTime = 0.f,
+        int _stars = 0
+    ):
     type(_type),
     stateID(_stateID),
-    levelIndex(_levelIndex)
+    levelIndex(_levelIndex),
+    completionTime(_completionTime)
+    ,stars(_stars)
     {}
 
     Type type;
     StateID stateID;
     int levelIndex;
+    float completionTime;
+    int stars;
 };
 
 class State
@@ -63,5 +74,10 @@ public:
     void processEvent(const std::optional<sf::Event>& event, sf::RenderWindow& window);
     void update(float dt,sf::RenderWindow& window);
     void render(sf::RenderWindow& window);
-    std::unique_ptr<State> createState(StateID stataID,int levelIndex = -1);
+    std::unique_ptr<State> createState(
+        StateID stateID,
+        int levelIndex = -1,
+        float completionTime = 0.f,
+        int stars = 0
+    );
 };

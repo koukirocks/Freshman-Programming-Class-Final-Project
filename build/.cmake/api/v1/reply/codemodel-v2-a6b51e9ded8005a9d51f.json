@@ -584,14 +584,14 @@
 				{
 					"directoryIndex" : 1,
 					"id" : "ALL_BUILD::@120c268ab73394db0a9a",
-					"jsonFile" : "target-ALL_BUILD-Debug-4a1b37e4e99a57f1422a.json",
+					"jsonFile" : "target-ALL_BUILD-Debug-6ef85573f20a111d66cf.json",
 					"name" : "ALL_BUILD",
 					"projectIndex" : 1
 				},
 				{
 					"directoryIndex" : 0,
 					"id" : "ALL_BUILD::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-ALL_BUILD-Debug-26c94f61c5637f2c69a2.json",
+					"jsonFile" : "target-ALL_BUILD-Debug-bed73e0475acead8834d.json",
 					"name" : "ALL_BUILD",
 					"projectIndex" : 0
 				},
@@ -661,7 +661,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "MyGame::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-MyGame-Debug-1d560ee67136ae83bf18.json",
+					"jsonFile" : "target-MyGame-Debug-5e40978b66b956c6e209.json",
 					"name" : "MyGame",
 					"projectIndex" : 0
 				},
@@ -717,14 +717,14 @@
 				{
 					"directoryIndex" : 10,
 					"id" : "sfml-audio::@a153e5727587c53fce98",
-					"jsonFile" : "target-sfml-audio-Debug-6aa0f56e4031e13a498a.json",
+					"jsonFile" : "target-sfml-audio-Debug-952afc1cc5c5951228c4.json",
 					"name" : "sfml-audio",
 					"projectIndex" : 1
 				},
 				{
 					"directoryIndex" : 6,
 					"id" : "sfml-graphics::@98af38147d5fa7e70f61",
-					"jsonFile" : "target-sfml-graphics-Debug-978f266187241f588685.json",
+					"jsonFile" : "target-sfml-graphics-Debug-697649ef35f74de13111.json",
 					"name" : "sfml-graphics",
 					"projectIndex" : 1
 				},
@@ -745,7 +745,7 @@
 				{
 					"directoryIndex" : 5,
 					"id" : "sfml-window::@5730451e331e3690ae65",
-					"jsonFile" : "target-sfml-window-Debug-de0654b944bccd3f85b8.json",
+					"jsonFile" : "target-sfml-window-Debug-7e9b9aafc718f6993f74.json",
 					"name" : "sfml-window",
 					"projectIndex" : 1
 				},
@@ -1355,14 +1355,14 @@
 				{
 					"directoryIndex" : 1,
 					"id" : "ALL_BUILD::@120c268ab73394db0a9a",
-					"jsonFile" : "target-ALL_BUILD-Release-4a1b37e4e99a57f1422a.json",
+					"jsonFile" : "target-ALL_BUILD-Release-6ef85573f20a111d66cf.json",
 					"name" : "ALL_BUILD",
 					"projectIndex" : 1
 				},
 				{
 					"directoryIndex" : 0,
 					"id" : "ALL_BUILD::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-ALL_BUILD-Release-26c94f61c5637f2c69a2.json",
+					"jsonFile" : "target-ALL_BUILD-Release-bed73e0475acead8834d.json",
 					"name" : "ALL_BUILD",
 					"projectIndex" : 0
 				},
@@ -1432,7 +1432,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "MyGame::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-MyGame-Release-94543e0df01eafde611e.json",
+					"jsonFile" : "target-MyGame-Release-21ed58588a1a6ad4fa89.json",
 					"name" : "MyGame",
 					"projectIndex" : 0
 				},
@@ -1488,14 +1488,14 @@
 				{
 					"directoryIndex" : 10,
 					"id" : "sfml-audio::@a153e5727587c53fce98",
-					"jsonFile" : "target-sfml-audio-Release-52eb5525d42671b05967.json",
+					"jsonFile" : "target-sfml-audio-Release-030f9d3d92a0f0e7acd4.json",
 					"name" : "sfml-audio",
 					"projectIndex" : 1
 				},
 				{
 					"directoryIndex" : 6,
 					"id" : "sfml-graphics::@98af38147d5fa7e70f61",
-					"jsonFile" : "target-sfml-graphics-Release-e769272364da28e53278.json",
+					"jsonFile" : "target-sfml-graphics-Release-0092e63d1729bb7dbd6f.json",
 					"name" : "sfml-graphics",
 					"projectIndex" : 1
 				},
@@ -1516,7 +1516,7 @@
 				{
 					"directoryIndex" : 5,
 					"id" : "sfml-window::@5730451e331e3690ae65",
-					"jsonFile" : "target-sfml-window-Release-70660ddde1988c5fbd34.json",
+					"jsonFile" : "target-sfml-window-Release-0e21e867705e87484545.json",
 					"name" : "sfml-window",
 					"projectIndex" : 1
 				},
@@ -2126,14 +2126,14 @@
 				{
 					"directoryIndex" : 1,
 					"id" : "ALL_BUILD::@120c268ab73394db0a9a",
-					"jsonFile" : "target-ALL_BUILD-MinSizeRel-4a1b37e4e99a57f1422a.json",
+					"jsonFile" : "target-ALL_BUILD-MinSizeRel-6ef85573f20a111d66cf.json",
 					"name" : "ALL_BUILD",
 					"projectIndex" : 1
 				},
 				{
 					"directoryIndex" : 0,
 					"id" : "ALL_BUILD::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-ALL_BUILD-MinSizeRel-26c94f61c5637f2c69a2.json",
+					"jsonFile" : "target-ALL_BUILD-MinSizeRel-bed73e0475acead8834d.json",
 					"name" : "ALL_BUILD",
 					"projectIndex" : 0
 				},
@@ -2203,7 +2203,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "MyGame::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-MyGame-MinSizeRel-d38665b7101c8be9ac93.json",
+					"jsonFile" : "target-MyGame-MinSizeRel-8fdea0e85bc0cc8e3c64.json",
 					"name" : "MyGame",
 					"projectIndex" : 0
 				},
@@ -2259,14 +2259,14 @@
 				{
 					"directoryIndex" : 10,
 					"id" : "sfml-audio::@a153e5727587c53fce98",
-					"jsonFile" : "target-sfml-audio-MinSizeRel-2952734439b884d68a3d.json",
+					"jsonFile" : "target-sfml-audio-MinSizeRel-4cfbb1f45dd5bafc63d8.json",
 					"name" : "sfml-audio",
 					"projectIndex" : 1
 				},
 				{
 					"directoryIndex" : 6,
 					"id" : "sfml-graphics::@98af38147d5fa7e70f61",
-					"jsonFile" : "target-sfml-graphics-MinSizeRel-12aa008bbed5e38ba225.json",
+					"jsonFile" : "target-sfml-graphics-MinSizeRel-abebca2fbefb02b78629.json",
 					"name" : "sfml-graphics",
 					"projectIndex" : 1
 				},
@@ -2287,7 +2287,7 @@
 				{
 					"directoryIndex" : 5,
 					"id" : "sfml-window::@5730451e331e3690ae65",
-					"jsonFile" : "target-sfml-window-MinSizeRel-adf6c7139da208d75569.json",
+					"jsonFile" : "target-sfml-window-MinSizeRel-01167c6a2168466dbfce.json",
 					"name" : "sfml-window",
 					"projectIndex" : 1
 				},
@@ -2897,14 +2897,14 @@
 				{
 					"directoryIndex" : 1,
 					"id" : "ALL_BUILD::@120c268ab73394db0a9a",
-					"jsonFile" : "target-ALL_BUILD-RelWithDebInfo-4a1b37e4e99a57f1422a.json",
+					"jsonFile" : "target-ALL_BUILD-RelWithDebInfo-6ef85573f20a111d66cf.json",
 					"name" : "ALL_BUILD",
 					"projectIndex" : 1
 				},
 				{
 					"directoryIndex" : 0,
 					"id" : "ALL_BUILD::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-ALL_BUILD-RelWithDebInfo-26c94f61c5637f2c69a2.json",
+					"jsonFile" : "target-ALL_BUILD-RelWithDebInfo-bed73e0475acead8834d.json",
 					"name" : "ALL_BUILD",
 					"projectIndex" : 0
 				},
@@ -2974,7 +2974,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "MyGame::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-MyGame-RelWithDebInfo-411e011e7289b939ec95.json",
+					"jsonFile" : "target-MyGame-RelWithDebInfo-bc53cae1dc865a21b223.json",
 					"name" : "MyGame",
 					"projectIndex" : 0
 				},
@@ -3030,14 +3030,14 @@
 				{
 					"directoryIndex" : 10,
 					"id" : "sfml-audio::@a153e5727587c53fce98",
-					"jsonFile" : "target-sfml-audio-RelWithDebInfo-4a8847c7ce8370822627.json",
+					"jsonFile" : "target-sfml-audio-RelWithDebInfo-2937674944ab321e5d8a.json",
 					"name" : "sfml-audio",
 					"projectIndex" : 1
 				},
 				{
 					"directoryIndex" : 6,
 					"id" : "sfml-graphics::@98af38147d5fa7e70f61",
-					"jsonFile" : "target-sfml-graphics-RelWithDebInfo-0764c062005913f6a135.json",
+					"jsonFile" : "target-sfml-graphics-RelWithDebInfo-7d85e2d6ef0aac4c4b56.json",
 					"name" : "sfml-graphics",
 					"projectIndex" : 1
 				},
@@ -3058,7 +3058,7 @@
 				{
 					"directoryIndex" : 5,
 					"id" : "sfml-window::@5730451e331e3690ae65",
-					"jsonFile" : "target-sfml-window-RelWithDebInfo-1b13e6fbf838da611f9b.json",
+					"jsonFile" : "target-sfml-window-RelWithDebInfo-a8df937034d3380875e5.json",
 					"name" : "sfml-window",
 					"projectIndex" : 1
 				},

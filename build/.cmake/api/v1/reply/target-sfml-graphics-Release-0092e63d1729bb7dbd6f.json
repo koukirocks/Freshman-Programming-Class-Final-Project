@@ -405,10 +405,6 @@
 			"id" : "sfml-window::@5730451e331e3690ae65"
 		},
 		{
-			"backtrace" : 4,
-			"id" : "sfml-system::@8cb1db2982443611e568"
-		},
-		{
 			"backtrace" : 5,
 			"id" : "freetype::@d06f9f5ffc3cc0b4bd77"
 		},
@@ -421,6 +417,10 @@
 		},
 		{
 			"id" : "ZERO_CHECK::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 4,
+			"id" : "sfml-system::@8cb1db2982443611e568"
 		}
 	],
 	"folder" : 

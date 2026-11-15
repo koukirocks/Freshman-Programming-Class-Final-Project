@@ -1,7 +1,21 @@
-# cube x y z sx sy sz
-player_position 0 50 200
+# Level 1: a short movement and jumping tutorial.
+player_position -350 50 200
 player_size 80 80
+star_times 15 30 60
 # instruction "text" text_x text_y text_size "button" button_x button_y button_width button_height
-instruction "Use the arrow keys or WASD to move.\nPress Next to continue." 100 100 60 "Next" 1280 360 500 150
-cube -2000 -2000 0 4000 4000 200 # comments can also follow an entry
-finish 300 0 300 100 1000 1007
+instruction "用 A and D to move.\nPress W to jump.\nReach the gold finish." 220 105 32 "NEXT" 640 555 180 54
+
+# 1. Safe starting platform. The player begins on its left side.
+cube -700 0 0 1100 600 200
+
+# 2. First jump: a small gap teaches the player to jump.
+cube 550 0 0 400 600 200
+
+# 3. Second jump: a raised platform introduces vertical timing.
+cube 1050 0 120 420 600 160
+
+# 4. Final runway leading to the goal.
+cube 1550 0 0 550 600 200
+
+# Gold finish at the end of the runway.
+finish 1950 0 200 140 600 500

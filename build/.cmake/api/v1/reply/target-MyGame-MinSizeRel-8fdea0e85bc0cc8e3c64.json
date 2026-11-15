@@ -2,10 +2,10 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "Release/MyGame.exe"
+			"path" : "MinSizeRel/MyGame.exe"
 		},
 		{
-			"path" : "Release/MyGame.pdb"
+			"path" : "MinSizeRel/MyGame.pdb"
 		}
 	],
 	"backtrace" : 1,
@@ -98,7 +98,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "/DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -std:c++17 -MD"
+					"fragment" : "/DWIN32 /D_WINDOWS /EHsc /O1 /Ob1 /DNDEBUG -std:c++17 -MD"
 				}
 			],
 			"defines" : 
@@ -164,10 +164,6 @@
 		},
 		{
 			"backtrace" : 2,
-			"id" : "sfml-system::@8cb1db2982443611e568"
-		},
-		{
-			"backtrace" : 2,
 			"id" : "freetype::@d06f9f5ffc3cc0b4bd77"
 		},
 		{
@@ -180,6 +176,10 @@
 		},
 		{
 			"id" : "ZERO_CHECK::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "sfml-system::@8cb1db2982443611e568"
 		}
 	],
 	"id" : "MyGame::@6890427a1f51a3e7e1df",
@@ -188,7 +188,7 @@
 		"commandFragments" : 
 		[
 			{
-				"fragment" : "/DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -MD",
+				"fragment" : "/DWIN32 /D_WINDOWS /EHsc /O1 /Ob1 /DNDEBUG -MD",
 				"role" : "flags"
 			},
 			{
@@ -201,17 +201,17 @@
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "_deps\\sfml-build\\lib\\Release\\sfml-graphics-s.lib",
+				"fragment" : "_deps\\sfml-build\\lib\\MinSizeRel\\sfml-graphics-s.lib",
 				"role" : "libraries"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "_deps\\sfml-build\\lib\\Release\\sfml-window-s.lib",
+				"fragment" : "_deps\\sfml-build\\lib\\MinSizeRel\\sfml-window-s.lib",
 				"role" : "libraries"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "_deps\\sfml-build\\lib\\Release\\sfml-system-s.lib",
+				"fragment" : "_deps\\sfml-build\\lib\\MinSizeRel\\sfml-system-s.lib",
 				"role" : "libraries"
 			},
 			{
@@ -231,12 +231,12 @@
 			},
 			{
 				"backtrace" : 7,
-				"fragment" : "_deps\\sfml-build\\lib\\Release\\harfbuzz.lib",
+				"fragment" : "_deps\\sfml-build\\lib\\MinSizeRel\\harfbuzz.lib",
 				"role" : "libraries"
 			},
 			{
 				"backtrace" : 7,
-				"fragment" : "_deps\\sfml-build\\lib\\Release\\freetype.lib",
+				"fragment" : "_deps\\sfml-build\\lib\\MinSizeRel\\freetype.lib",
 				"role" : "libraries"
 			},
 			{

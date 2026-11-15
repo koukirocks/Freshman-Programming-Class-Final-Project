@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 
+#include <array>
 #include <filesystem>
 #include <string>
 #include <vector>
@@ -29,6 +30,7 @@ struct LevelData
     std::vector<LevelCubeData> cubes;
     LevelCubeData finish;
     std::vector<LevelInstructionData> instructions;
+    std::array<float, 3> starTimes;
 };
 
 std::vector<std::filesystem::path> getLevelFiles();
