@@ -71,6 +71,7 @@ text(assets.getFont("assets/fonts/NotoSansSC.ttf"),"LEVEL COMPLETE",40),
 timeLabel(assets.getFont("assets/fonts/NotoSansSC.ttf"),"",32),
 levelIndex(_levelIndex),
 stars(_stars),
+hasNextLevel(false),
 filledStars{
     sf::Sprite(assets.getTexture("assets/images/star_filled.png")),
     sf::Sprite(assets.getTexture("assets/images/star_filled.png")),
@@ -85,6 +86,7 @@ emptyStars{
     const auto levelFiles = getLevelFiles();
     if (levelIndex < 0 || levelIndex >= static_cast<int>(levelFiles.size()))
         throw std::out_of_range("Completed level does not exist");
+    hasNextLevel = levelIndex + 1 < static_cast<int>(levelFiles.size());
 
     const LevelData level = loadLevel(levelFiles[levelIndex]);
 
@@ -132,9 +134,19 @@ emptyStars{
     }
 
     panel = UITheme::makePanel({80,24}, {1120,672});
-    buttons.push_back(makeButton(assets, "RETRY", {640,385}));
-    buttons.push_back(makeButton(assets, "LEVEL SELECT", {640,465}));
-    buttons.push_back(makeButton(assets, "MAIN MENU", {640,545}));
+    if (hasNextLevel)
+    {
+        buttons.push_back(makeButton(assets, "NEXT LEVEL", {640,385}));
+        buttons.push_back(makeButton(assets, "RETRY", {640,465}));
+        buttons.push_back(makeButton(assets, "LEVEL SELECT", {640,545}));
+        buttons.push_back(makeButton(assets, "MAIN MENU", {640,625}));
+    }
+    else
+    {
+        buttons.push_back(makeButton(assets, "RETRY", {640,385}));
+        buttons.push_back(makeButton(assets, "LEVEL SELECT", {640,465}));
+        buttons.push_back(makeButton(assets, "MAIN MENU", {640,545}));
+    }
 }
 
 void LevelCompleteState::processEvent(
@@ -151,7 +163,16 @@ void LevelCompleteState::processEvent(
             return;
 
         const sf::Vector2f mousePosition = Display::mousePosition(window);
-        if (buttons[0].isHovered(mousePosition))
+        if (hasNextLevel && buttons[0].isHovered(mousePosition))
+        {
+            stateRequests.push(StateRequest(StateRequest::Type::Pop,StateID::Null));
+            stateRequests.push(StateRequest(
+                StateRequest::Type::Push,
+                StateID::Level,
+                levelIndex + 1
+            ));
+        }
+        else if (buttons[hasNextLevel ? 1 : 0].isHovered(mousePosition))
         {
             stateRequests.push(StateRequest(StateRequest::Type::Pop,StateID::Null));
             stateRequests.push(StateRequest(
@@ -160,12 +181,12 @@ void LevelCompleteState::processEvent(
                 levelIndex
             ));
         }
-        else if (buttons[1].isHovered(mousePosition))
+        else if (buttons[hasNextLevel ? 2 : 1].isHovered(mousePosition))
         {
             stateRequests.push(StateRequest(StateRequest::Type::Pop,StateID::Null));
             stateRequests.push(StateRequest(StateRequest::Type::Push,StateID::LevelSelect));
         }
-        else if (buttons[2].isHovered(mousePosition))
+        else if (buttons[hasNextLevel ? 3 : 2].isHovered(mousePosition))
         {
             stateRequests.push(StateRequest(StateRequest::Type::Pop,StateID::Null));
             stateRequests.push(StateRequest(StateRequest::Type::Push,StateID::Menu));

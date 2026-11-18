@@ -13,6 +13,7 @@ class LevelState : public State
 private:
     LevelData level;
     std::vector<std::unique_ptr<Cube>> cubes;
+    std::vector<std::unique_ptr<Cube>> spikes;
     std::unique_ptr<FinishCube> finishCube;
     Player player;
     sf::Vector3f cameraPosition;
@@ -22,6 +23,7 @@ private:
     bool instructionsShown;
     bool restartRequested;
     bool deathPending;
+    bool shakeOnDeath;
     float deathElapsed;
     float fadeInElapsed;
     bool cameraFollowPending;
@@ -29,6 +31,9 @@ private:
     int earnedStars;
     sf::RectangleShape timerPanel;
     sf::Text timerText;
+    sf::RectangleShape anglePanel;
+    sf::Text angleText;
+    sf::ConvexShape angleIndicator;
 
 public:
     LevelState(AssetManager& assets,std::queue<StateRequest>& stateRequests,int levelIndex);

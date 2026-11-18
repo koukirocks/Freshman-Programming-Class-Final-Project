@@ -29,6 +29,8 @@ add_executable(MyGame
     src/game/GameObject.cpp
     src/game/Cube.cpp
     src/game/ObstacleCube.cpp
+    src/game/MovingCube.cpp
+    src/game/SpikeCube.cpp
     src/game/FinishCube.cpp
     src/game/Level.cpp
     src/game/Player.cpp
@@ -51,6 +53,8 @@ target_link_libraries(MyGame PRIVATE
 
 add_custom_command(
     TARGET MyGame POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E rm -rf
+        "$<TARGET_FILE_DIR:MyGame>/assets"
     COMMAND ${CMAKE_COMMAND} -E copy_directory
         "${CMAKE_SOURCE_DIR}/assets"
         "$<TARGET_FILE_DIR:MyGame>/assets"

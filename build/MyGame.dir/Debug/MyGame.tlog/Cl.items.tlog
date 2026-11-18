@@ -9,6 +9,8 @@ C:\Users\UM3504DA\Desktop\C++ Game Project\src\objects\Button.cpp;C:\Users\UM350
 C:\Users\UM3504DA\Desktop\C++ Game Project\src\game\GameObject.cpp;C:\Users\UM3504DA\Desktop\C++ Game Project\build\MyGame.dir\Debug\GameObject.obj
 C:\Users\UM3504DA\Desktop\C++ Game Project\src\game\Cube.cpp;C:\Users\UM3504DA\Desktop\C++ Game Project\build\MyGame.dir\Debug\Cube.obj
 C:\Users\UM3504DA\Desktop\C++ Game Project\src\game\ObstacleCube.cpp;C:\Users\UM3504DA\Desktop\C++ Game Project\build\MyGame.dir\Debug\ObstacleCube.obj
+C:\Users\UM3504DA\Desktop\C++ Game Project\src\game\MovingCube.cpp;C:\Users\UM3504DA\Desktop\C++ Game Project\build\MyGame.dir\Debug\MovingCube.obj
+C:\Users\UM3504DA\Desktop\C++ Game Project\src\game\SpikeCube.cpp;C:\Users\UM3504DA\Desktop\C++ Game Project\build\MyGame.dir\Debug\SpikeCube.obj
 C:\Users\UM3504DA\Desktop\C++ Game Project\src\game\FinishCube.cpp;C:\Users\UM3504DA\Desktop\C++ Game Project\build\MyGame.dir\Debug\FinishCube.obj
 C:\Users\UM3504DA\Desktop\C++ Game Project\src\game\Level.cpp;C:\Users\UM3504DA\Desktop\C++ Game Project\build\MyGame.dir\Debug\Level.obj
 C:\Users\UM3504DA\Desktop\C++ Game Project\src\game\Player.cpp;C:\Users\UM3504DA\Desktop\C++ Game Project\build\MyGame.dir\Debug\src\game\Player.cpp.obj

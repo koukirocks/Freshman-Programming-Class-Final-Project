@@ -1,8 +1,21 @@
-# cube x y z sx sy sz
-player_position 0 50 200
+# 第一關：移動與跳躍教學
+player_position -350 50 200
 player_size 80 80
 star_times 15 30 60
-# instruction "text" text_x text_y text_size "button" button_x button_y button_width button_height
-instruction "Use the arrow keys or WASD to move.\nPress Next to continue." 100 100 60 "Next" 1280 360 500 150
-cube -2000 -2000 0 4000 4000 200 # comments can also follow an entry
-finish 300 0 300 100 1000 100
+# 教學格式：instruction "文字" 文字位置X 文字位置Y 文字大小 "按鈕文字" 按鈕位置X 按鈕位置Y 按鈕寬度 按鈕高度
+instruction "按 W 可以跳躍。\n上下左右箭頭可以移動鏡頭。\n一樣到達金色終點即可完成關卡。" 220 105 32 "開始" 640 555 180 54
+
+# 安全的起始平台，玩家從左側開始。
+cube -700 0 0 1100 600 200
+
+# 第一個缺口，用來練習跳躍。
+cube 550 0 0 400 600 200
+
+# 抬高的平台，練習在空中控制落點。
+cube 1050 0 120 420 600 160
+
+# 通往終點的最後一段跑道。
+cube 1550 0 0 550 600 200
+
+# 跑道盡頭的金色終點。
+finish 1950 0 200 140 600 500

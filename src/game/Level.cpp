@@ -5,10 +5,37 @@
 #include <iomanip>
 #include <stdexcept>
 #include <string>
+#include <string_view>
 
 namespace
 {
     constexpr char levelDirectory[] = "assets/data/level";
+
+    int levelNumber(const std::filesystem::path& path)
+    {
+        const std::string stem = path.stem().string();
+        constexpr std::string_view prefix = "level";
+        if (stem.size() <= prefix.size()
+            || stem.compare(0, prefix.size(), prefix) != 0)
+        {
+            return -1;
+        }
+
+        try
+        {
+            std::size_t parsedLength = 0;
+            const int number = std::stoi(stem.substr(prefix.size()), &parsedLength);
+            return parsedLength == stem.size() - prefix.size() ? number : -1;
+        }
+        catch (const std::invalid_argument&)
+        {
+            return -1;
+        }
+        catch (const std::out_of_range&)
+        {
+            return -1;
+        }
+    }
 
     void require(bool condition,const std::string& message)
     {
@@ -93,7 +120,15 @@ std::vector<std::filesystem::path> getLevelFiles()
             paths.push_back(entry.path());
     }
 
-    std::sort(paths.begin(),paths.end());
+    std::sort(paths.begin(),paths.end(),[](const auto& first,const auto& second) {
+        const int firstNumber = levelNumber(first);
+        const int secondNumber = levelNumber(second);
+        if (firstNumber != -1 && secondNumber != -1)
+            return firstNumber < secondNumber;
+        if (firstNumber != -1 || secondNumber != -1)
+            return firstNumber != -1;
+        return first < second;
+    });
     return paths;
 }
 
@@ -145,7 +180,8 @@ LevelData loadLevel(const std::filesystem::path& path)
             file >> level.starTimes[0] >> level.starTimes[1] >> level.starTimes[2];
             hasStarTimes = true;
         }
-        else if (name == "cube" || name == "finish")
+        else if (name == "cube" || name == "moving_cube"
+            || name == "spike" || name == "finish")
         {
             LevelCubeData cube;
             file >> cube.position.x >> cube.position.y >> cube.position.z
@@ -153,6 +189,17 @@ LevelData loadLevel(const std::filesystem::path& path)
 
             if (name == "cube")
                 level.cubes.push_back(cube);
+            else if (name == "spike")
+                level.spikes.push_back(cube);
+            else if (name == "moving_cube")
+            {
+                MovingCubeData movingCube;
+                movingCube.position = cube.position;
+                movingCube.size = cube.size;
+                file >> movingCube.travel.x >> movingCube.travel.y
+                     >> movingCube.travel.z >> movingCube.speed;
+                level.movingCubes.push_back(movingCube);
+            }
             else
             {
                 level.finish = cube;

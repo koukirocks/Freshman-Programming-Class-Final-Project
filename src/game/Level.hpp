@@ -13,6 +13,14 @@ struct LevelCubeData
     sf::Vector3f size;
 };
 
+struct MovingCubeData
+{
+    sf::Vector3f position;
+    sf::Vector3f size;
+    sf::Vector3f travel;
+    float speed;
+};
+
 struct LevelInstructionData
 {
     std::string text;
@@ -28,6 +36,8 @@ struct LevelData
     sf::Vector3f playerPosition;
     sf::Vector2f playerSize;
     std::vector<LevelCubeData> cubes;
+    std::vector<MovingCubeData> movingCubes;
+    std::vector<LevelCubeData> spikes;
     LevelCubeData finish;
     std::vector<LevelInstructionData> instructions;
     std::array<float, 3> starTimes;

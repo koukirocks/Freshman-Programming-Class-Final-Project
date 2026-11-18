@@ -1,6 +1,8 @@
 #include "states/LevelState.hpp"
 
 #include "game/ObstacleCube.hpp"
+#include "game/MovingCube.hpp"
+#include "game/SpikeCube.hpp"
 #include "UITheme.hpp"
 #include "LevelProgress.hpp"
 
@@ -29,6 +31,33 @@ namespace
                << ':' << std::setw(2) << wholeSeconds
                << '.' << std::setw(2) << centiseconds;
         return result.str();
+    }
+
+    std::string formatAngle(float radians)
+    {
+        constexpr float pi = 3.14159265358979323846f;
+        float degrees = std::fmod(radians * 180.f / pi, 360.f);
+        if (degrees < 0.f)
+            degrees += 360.f;
+
+        std::ostringstream result;
+        result << std::fixed << std::setprecision(1) << degrees;
+        return result.str();
+    }
+
+    sf::ConvexShape makeAngleIndicator()
+    {
+        sf::ConvexShape result(7);
+        result.setPoint(0,{0.f,1.f});
+        result.setPoint(1,{28.f,1.f});
+        result.setPoint(2,{28.f,0.f});
+        result.setPoint(3,{36.f,3.f});
+        result.setPoint(4,{28.f,6.f});
+        result.setPoint(5,{28.f,5.f});
+        result.setPoint(6,{0.f,5.f});
+        result.setOrigin({0.f,3.f});
+        result.setFillColor(UITheme::accent);
+        return result;
     }
 
     sf::Vector2f forwardAxis(float angle)
@@ -150,6 +179,7 @@ LevelState::LevelState(AssetManager& assets,std::queue<StateRequest>& stateReque
 State(assets,stateRequests),
 level(),
 cubes(),
+spikes(),
 finishCube(),
 player({0,0,0},{0,0}),
 cameraPosition({0,0,0}),
@@ -161,13 +191,17 @@ instructionsShown(false)
 restartRequested(false)
 ,
 deathPending(false),
+shakeOnDeath(false),
 deathElapsed(0.f),
 fadeInElapsed(0.f),
 cameraFollowPending(false),
 levelTime(0.f),
 earnedStars(0),
 timerPanel(UITheme::makePanel({24.f, 24.f}, {190.f, 64.f})),
-timerText(UITheme::makeText(assets, "TIME  00:00.00", 24, UITheme::text))
+timerText(UITheme::makeText(assets, "TIME  00:00.00", 24, UITheme::text)),
+anglePanel(UITheme::makePanel({230.f, 24.f}, {190.f, 96.f})),
+angleText(UITheme::makeText(assets, "ANGLE  0.0 deg", 16, UITheme::text)),
+angleIndicator(makeAngleIndicator())
 {
     const auto levelFiles = getLevelFiles();
     if (levelIndex < 0 || levelIndex >= static_cast<int>(levelFiles.size()))
@@ -183,6 +217,16 @@ timerText(UITheme::makeText(assets, "TIME  00:00.00", 24, UITheme::text))
             std::make_unique<ObstacleCube>(cube.position,cube.size)
         );
     }
+    for (const auto& cube:level.movingCubes)
+    {
+        cubes.push_back(
+            std::make_unique<MovingCube>(
+                cube.position,cube.size,cube.travel,cube.speed
+            )
+        );
+    }
+    for (const auto& spike:level.spikes)
+        spikes.push_back(std::make_unique<SpikeCube>(spike.position,spike.size));
 }
 
 void LevelState::processEvent(const std::optional<sf::Event>& event, sf::RenderWindow& window)
@@ -193,6 +237,7 @@ void LevelState::processEvent(const std::optional<sf::Event>& event, sf::RenderW
         if (keyPressed->scancode == sf::Keyboard::Scan::R)
         {
             deathPending = true;
+            shakeOnDeath = false;
             deathElapsed = 1.f;
             restartRequested = true;
             return;
@@ -227,11 +272,98 @@ void LevelState::update(float dt,sf::RenderWindow& window)
     fadeInElapsed += std::max(dt, 0.f);
     if (instructionsShown)
         levelTime += std::max(dt, 0.f);
+
+    struct MovingSupport
+    {
+        MovingCube* cube;
+        bool wasVerticallySupported;
+    };
+    std::vector<MovingSupport> movingSupports;
+    for (const auto& cube:cubes)
+    {
+        auto* movingCube = dynamic_cast<MovingCube*>(cube.get());
+        if (!movingCube)
+            continue;
+
+        const sf::Vector3f cubePosition = movingCube->getPosition();
+        const sf::Vector3f cubeSize = movingCube->getSize();
+        const sf::Vector3f playerPosition = player.getPosition();
+        const float platformTop = cubePosition.z + cubeSize.z;
+        const bool isVerticallySupported =
+            playerPosition.z >= platformTop - 0.5f
+            && playerPosition.z <= platformTop + 0.5f
+            && player.collidesWith(*movingCube);
+
+        movingSupports.push_back({movingCube,isVerticallySupported});
+    }
+
+    for (const auto& cube:cubes)
+        cube->update(dt);
+    for (const auto& spike:spikes)
+        spike->update(dt);
+
+    for (const MovingSupport& support:movingSupports)
+    {
+        const sf::Vector3f movement = support.cube->getMovementDelta();
+        if (support.wasVerticallySupported
+            && std::abs(movement.z) > 0.001f)
+            player.setPosition(player.getPosition()
+                + sf::Vector3f(0.f,0.f,movement.z));
+
+        const bool hasHorizontalMovement =
+            std::abs(movement.x) > 0.001f
+            || std::abs(movement.y) > 0.001f;
+        if (!hasHorizontalMovement)
+            continue;
+
+        const sf::Vector3f cubePosition = support.cube->getPosition();
+        const sf::Vector3f cubeSize = support.cube->getSize();
+        const sf::Vector3f playerPosition = player.getPosition();
+        const sf::Vector2f playerSize = player.getSize();
+        const float cubeBottom = cubePosition.z;
+        const float cubeTop = cubePosition.z + cubeSize.z;
+        const float playerBottom = playerPosition.z;
+        const float playerTop = playerPosition.z + playerSize.y;
+        const bool hasStrictVerticalOverlap =
+            playerTop > cubeBottom && playerBottom < cubeTop;
+        if (!hasStrictVerticalOverlap)
+            continue;
+
+        const sf::Vector2f cubeCenter(
+            cubePosition.x + cubeSize.x * 0.5f,
+            cubePosition.y + cubeSize.y * 0.5f
+        );
+        const sf::Vector2f playerOffset(
+            playerPosition.x - cubeCenter.x,
+            playerPosition.y - cubeCenter.y
+        );
+        const float approach =
+            movement.x * playerOffset.x + movement.y * playerOffset.y;
+
+        if (approach > 0.f && player.collidesWith(*support.cube))
+            player.setPosition(
+                player.getPosition()
+                + sf::Vector3f(movement.x,movement.y,0.f)
+            );
+    }
+
     player.update(dt,cubes);
+
+    for (const auto& spike:spikes)
+    {
+        if (player.collidesWith(*spike))
+        {
+            deathPending = true;
+            shakeOnDeath = true;
+            deathElapsed = 0.f;
+            return;
+        }
+    }
 
     if (!restartRequested && player.getPosition().z < -500.f)
     {
         deathPending = true;
+        shakeOnDeath = false;
         deathElapsed = 0.f;
         return;
     }
@@ -371,6 +503,7 @@ void LevelState::update(float dt,sf::RenderWindow& window)
     if (!restartRequested && playerHasFallen)
     {
         deathPending = true;
+        shakeOnDeath = false;
         deathElapsed = 0.f;
         return;
     }
@@ -396,6 +529,19 @@ void LevelState::update(float dt,sf::RenderWindow& window)
 
 void LevelState::render(sf::RenderWindow& window)
 {
+    sf::Vector2f shakeOffset(0.f,0.f);
+    if (shakeOnDeath && deathPending)
+    {
+        constexpr float shakeDuration = 1.f;
+        constexpr float shakeAmplitude = 14.f;
+        const float progress = std::clamp(deathElapsed / shakeDuration,0.f,1.f);
+        const float amplitude = shakeAmplitude * (1.f - progress);
+        shakeOffset = {
+            std::sin(deathElapsed * 71.f) * amplitude,
+            std::cos(deathElapsed * 83.f) * amplitude
+        };
+    }
+
     const sf::Vector3f playerPosition = player.getPosition();
     const float playerAngle = player.getAngle();
     const sf::Vector2f forward = forwardAxis(playerAngle);
@@ -407,25 +553,40 @@ void LevelState::render(sf::RenderWindow& window)
         dot(forward,playerDisplacement),
         playerPosition.z - cameraPosition.z
     );
+    const sf::Vector2f shakenScreenOffset = screenOffset + shakeOffset;
     for (const auto& cube:cubes)
     {
-        renderCubeSlice(window,*cube,playerPosition,playerAngle,screenOffset,sf::Color(70,110,180));
+        renderCubeSlice(window,*cube,playerPosition,playerAngle,shakenScreenOffset,sf::Color(70,110,180));
+    }
+    for (const auto& spike:spikes)
+    {
+        renderCubeSlice(window,*spike,playerPosition,playerAngle,shakenScreenOffset,sf::Color(220,50,50));
     }
 
-    renderCubeSlice(window,*finishCube,playerPosition,playerAngle,screenOffset,sf::Color(255,210,40));
+    renderCubeSlice(window,*finishCube,playerPosition,playerAngle,shakenScreenOffset,sf::Color(255,210,40));
 
     const sf::Vector2f playerSize = player.getSize();
     sf::RectangleShape playerShape({playerSize.x,playerSize.y});
     const sf::Vector2f screenCenter = window.getView().getCenter();
-    playerShape.setPosition({screenCenter.x + screenOffset.x,
-                              screenCenter.y - screenOffset.y - playerSize.y});
+    playerShape.setPosition({screenCenter.x + shakenScreenOffset.x,
+                              screenCenter.y - shakenScreenOffset.y - playerSize.y});
     playerShape.setFillColor(sf::Color(240,70,70));
     window.draw(playerShape);
 
     timerText.setString("TIME  " + formatTime(levelTime));
-    timerText.setPosition({42.f, 38.f});
+    timerPanel.setPosition({24.f + shakeOffset.x,24.f + shakeOffset.y});
+    timerText.setPosition({42.f + shakeOffset.x,38.f + shakeOffset.y});
     window.draw(timerPanel);
     window.draw(timerText);
+
+    angleText.setString("ANGLE  " + formatAngle(playerAngle) + " deg");
+    anglePanel.setPosition({230.f + shakeOffset.x,24.f + shakeOffset.y});
+    window.draw(anglePanel);
+    angleIndicator.setPosition({325.f + shakeOffset.x,61.f + shakeOffset.y});
+    angleIndicator.setRotation(sf::degrees(-playerAngle * 180.f / 3.14159265358979323846f));
+    window.draw(angleIndicator);
+    angleText.setPosition({246.f + shakeOffset.x,91.f + shakeOffset.y});
+    window.draw(angleText);
 
     if (deathPending)
     {

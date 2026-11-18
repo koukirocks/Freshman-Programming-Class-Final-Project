@@ -17,6 +17,7 @@ private:
     sf::Text timeLabel;
     int levelIndex;
     int stars;
+    bool hasNextLevel;
     std::array<sf::Sprite, 3> filledStars;
     std::array<sf::Sprite, 3> emptyStars;
 

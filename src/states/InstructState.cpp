@@ -50,7 +50,10 @@ void InstructState::showInstruction()
         UITheme::accent,
         sf::Text(
             assets.getFont("assets/fonts/NotoSansSC.ttf"),
-            instruction.buttonText,
+            sf::String::fromUtf8(
+                instruction.buttonText.begin(),
+                instruction.buttonText.end()
+            ),
             std::min(instruction.textSize, 30u)
         ),
         assets

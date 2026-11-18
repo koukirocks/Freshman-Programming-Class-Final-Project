@@ -131,9 +131,9 @@ void Player::update(float dt,const std::vector<std::unique_ptr<Cube>>& cubes)
     // FIX 2: rotation is collision-checked; revert if it would put us inside a cube.
     float newAngle = angle;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Q))
-        newAngle -= rotationSpeed * dt;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::E))
         newAngle += rotationSpeed * dt;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::E))
+        newAngle -= rotationSpeed * dt;
     if (newAngle != angle && !overlapsAny(size,newAngle,position,cubes))
         angle = newAngle;
 

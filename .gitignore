@@ -1,0 +1,45 @@
+# CMake build output
+/build/
+/cmake-build-*/
+
+# Visual Studio and MSBuild user-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.vs/
+
+# Compiled binaries and intermediate files
+*.obj
+*.o
+*.pdb
+*.ilk
+*.exe
+*.dll
+*.lib
+*.exp
+*.a
+*.so
+*.dylib
+
+# C/C++ tooling and coverage output
+compile_commands.json
+*.gcda
+*.gcno
+*.gcov
+
+# Editor and operating-system files
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+.idea/
+.DS_Store
+Thumbs.db
+
+# Local environment and temporary files
+*.log
+*.tmp
+*.bak
+*.swp
+*.swo

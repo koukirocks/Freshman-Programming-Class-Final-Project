@@ -1,0 +1,11 @@
+# Created with Freshman Level Editor
+player_position -600 100 200
+player_size 80 80
+star_times 30 75 150
+instruction "避開紅色尖刺，並利用移動平台通過缺口。" 220 105 32 "開始挑戰" 640 555 180 54
+cube -800 0 0 700 500 200
+cube 650 0 0 400 500 200
+spike -200 0 200 100 500 75
+moving_cube -50 0 0 250 500 200 0 700 0 140
+moving_cube 300 0 0 250 500 200 0 -700 0 120
+finish 950 0 200 150 500 400

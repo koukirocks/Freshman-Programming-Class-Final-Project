@@ -33,7 +33,7 @@ State(assets,stateRequests)
         sf::Text text(
             assets.getFont("assets/fonts/NotoSansSC.ttf"),
             std::to_string(index + 1),
-            80
+            48
         );
         text.setFillColor(UITheme::buttonText);
 
@@ -103,11 +103,11 @@ void LevelSelectState::processEvent(const std::optional<sf::Event>& event, sf::R
                 );
                 return;
             }
-            if (navigationButtons[0].isHovered(mousePosition))
-            {
-                stateRequests.push(StateRequest(StateRequest::Type::Pop,StateID::Null));
-                stateRequests.push(StateRequest(StateRequest::Type::Push,StateID::Menu));
-            }
+        }
+        if (navigationButtons[0].isHovered(mousePosition))
+        {
+            stateRequests.push(StateRequest(StateRequest::Type::Pop,StateID::Null));
+            stateRequests.push(StateRequest(StateRequest::Type::Push,StateID::Menu));
         }
     }
 }

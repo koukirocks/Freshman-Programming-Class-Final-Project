@@ -34,6 +34,12 @@
     <ClCompile Include="C:\Users\UM3504DA\Desktop\C++ Game Project\src\game\ObstacleCube.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="C:\Users\UM3504DA\Desktop\C++ Game Project\src\game\MovingCube.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UM3504DA\Desktop\C++ Game Project\src\game\SpikeCube.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="C:\Users\UM3504DA\Desktop\C++ Game Project\src\game\FinishCube.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
