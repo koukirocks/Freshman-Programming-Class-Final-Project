@@ -18,6 +18,7 @@ private:
     Player player;
     sf::Vector3f cameraPosition;
     float cameraAngle;
+    sf::View worldView;
     bool cameraInitialized;
     int levelIndex;
     bool instructionsShown;

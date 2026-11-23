@@ -6,15 +6,13 @@ Game::Game()
         "My Game",
         sf::Style::Titlebar | sf::Style::Close | sf::Style::Resize
     ),
-    gameView(sf::FloatRect({0.f, 0.f}, Display::virtualResolution)),
     assets(),
     stateStack(
         assets
     )
 {
     window.setFramerateLimit(60);
-    Display::updateViewport(gameView, window.getSize());
-    window.setView(gameView);
+    Display::setView(window,Display::virtualCenter);
     stateStack.push(stateStack.createState(StateID::Menu));
 }
 
@@ -29,8 +27,7 @@ void Game::run()
         {
             if (const auto* resized = event->getIf<sf::Event::Resized>())
             {
-                Display::updateViewport(gameView, resized->size);
-                window.setView(gameView);
+                Display::setView(window,Display::virtualCenter);
             }
             stateStack.processEvent(event,window);
             if (event->is<sf::Event::Closed>())
@@ -38,7 +35,7 @@ void Game::run()
                 window.close();
             }
         }
-        window.setView(gameView);
+        Display::setView(window,Display::virtualCenter);
         stateStack.update(dt,window);
         window.clear();
         stateStack.render(window);

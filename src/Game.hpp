@@ -17,7 +17,6 @@ private:
 
 private:
     sf::RenderWindow window;
-    sf::View gameView;
     AssetManager assets;
     StateStack stateStack;
 };

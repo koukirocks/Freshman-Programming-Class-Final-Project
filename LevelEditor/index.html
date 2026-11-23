@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Freshman Level Editor</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Freshman Level Editor</h1>
+    <div class="actions">
+      <label class="button">Open .level<input id="fileInput" type="file" accept=".level,.txt"></label>
+      <button id="saveButton">Save .level</button>
+      <button id="resetViewButton">Reset view</button>
+    </div>
+  </header>
+  <main>
+    <section class="viewport">
+      <canvas id="canvas"></canvas>
+      <div class="help">Drag to orbit · Wheel to zoom · Click an object to select · Delete removes the selected platform/moving platform/spike · H hides/shows the selected object</div>
+    </section>
+    <aside>
+      <div class="panel">
+        <h2>Scene</h2>
+        <button id="addCubeButton" class="wide">+ Add platform</button>
+        <button id="addMovingCubeButton" class="wide">+ Add moving platform</button>
+        <button id="addSpikeButton" class="wide">+ Add spike</button>
+        <button id="addFinishButton" class="wide finish-button">Set finish at origin</button>
+        <button id="showAllButton" class="wide">Show all hidden objects</button>
+        <button id="motionButton" class="wide"></button>
+        <div id="objectList" class="object-list"></div>
+      </div>
+      <div class="panel">
+        <h2>Selected object</h2>
+        <p id="selectionName" class="muted">Select an object in the scene.</p>
+        <div id="transformFields"></div>
+      </div>
+      <div class="panel">
+        <h2>Level settings</h2>
+        <div class="form-grid">
+          <label>Player X<input data-path="playerPosition.x" type="number"></label>
+          <label>Player Y<input data-path="playerPosition.y" type="number"></label>
+          <label>Player Z<input data-path="playerPosition.z" type="number"></label>
+          <label>Player width<input data-path="playerSize.x" type="number" min="1"></label>
+          <label>Player height<input data-path="playerSize.y" type="number" min="1"></label>
+          <label>3-star time<input data-path="starTimes.0" type="number" min="0"></label>
+          <label>2-star time<input data-path="starTimes.1" type="number" min="0"></label>
+          <label>1-star time<input data-path="starTimes.2" type="number" min="0"></label>
+        </div>
+      </div>
+      <div class="panel">
+        <h2>Instructions</h2>
+        <div id="instructionList" class="instruction-list"></div>
+        <button id="addInstructionButton" class="wide">+ Add instruction</button>
+      </div>
+      <p id="status" class="status">Ready. Open a level file to begin.</p>
+    </aside>
+  </main>
+  <script src="editor.js"></script>
+</body>
+</html>

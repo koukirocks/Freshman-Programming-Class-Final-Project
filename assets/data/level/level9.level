@@ -1,0 +1,9 @@
+# Created with Freshman Level Editor
+player_position -590 100 200
+player_size 80 80
+star_times 30 75 150
+instruction "轉向的時候也可能會碰到岩漿喔，小心！" 220 105 32 "開始挑戰" 640 555 180 54
+cube -800 0 0 700 500 200
+spike -500 0 200 200 500 300
+spike -800 0 200 200 500 300
+finish -500 600 200 150 500 400

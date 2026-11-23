@@ -1,0 +1,11 @@
+# Created with Freshman Level Editor
+player_position -600 100 200
+player_size 80 80
+star_times 30 75 150
+instruction "避開岩漿！不避開的話就準備回到原點吧！" 220 105 32 "開始挑戰" 640 555 180 54
+cube -800 0 0 700 500 200
+cube 150 0 0 1000 500 200
+spike -200 0 200 100 500 75
+spike 400 0 150 100 500 100
+spike 620 0 350 100 500 50
+finish 950 0 200 150 500 400

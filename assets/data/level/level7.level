@@ -1,0 +1,10 @@
+# Created with Freshman Level Editor
+player_position -600 100 200
+player_size 80 80
+star_times 30 75 150
+instruction "平台也可能斜向移動！\n旋轉視角來確認平台真正的移動方式吧" 220 105 32 "開始挑戰" 640 555 180 54
+cube -800 0 0 700 500 200
+cube 1000 700 700 400 500 200
+cube 1800 700 100 400 500 200
+moving_cube -50 0 0 250 500 200 700 700 700 140
+finish 2500 700 200 150 500 400

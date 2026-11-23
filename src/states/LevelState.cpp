@@ -7,12 +7,12 @@
 #include "LevelProgress.hpp"
 
 #include <algorithm>
-#include <array>
 #include <cmath>
 #include <iomanip>
+#include <limits>
+#include <optional>
 #include <sstream>
 #include <stdexcept>
-#include <vector>
 
 constexpr float edgeMargin = 100.f; // pixels from the window edge before the world starts scrolling
 constexpr float cameraMoveSpeed = 500.f;
@@ -70,20 +70,19 @@ namespace
         return first.x * second.x + first.y * second.y;
     }
 
-    void addPoint(std::vector<sf::Vector2f>& points,sf::Vector2f point)
+    struct CubeSlice
     {
-        for (const sf::Vector2f existing:points)
-        {
-            if (std::abs(existing.x - point.x) < 0.01f
-                && std::abs(existing.y - point.y) < 0.01f)
-            {
-                return;
-            }
-        }
-        points.push_back(point);
+        float start;
+        float end;
+        float height;
+    };
+
+    float forwardPosition(sf::Vector3f position, sf::Vector2f forward)
+    {
+        return dot(forward,{position.x,position.y});
     }
 
-    std::vector<sf::Vector2f> cubeSlice(
+    std::optional<CubeSlice> cubeSlice(
         const Cube& cube,
         sf::Vector3f playerPosition,
         float playerAngle
@@ -92,62 +91,41 @@ namespace
         const sf::Vector3f cubePosition = cube.getPosition();
         const sf::Vector3f cubeSize = cube.getSize();
         const sf::Vector2f forward = forwardAxis(playerAngle);
-        const sf::Vector2f normal(-forward.y,forward.x);
-        const std::array<sf::Vector3f,8> vertices = {
-            sf::Vector3f(cubePosition.x,cubePosition.y,cubePosition.z),
-            sf::Vector3f(cubePosition.x + cubeSize.x,cubePosition.y,cubePosition.z),
-            sf::Vector3f(cubePosition.x,cubePosition.y + cubeSize.y,cubePosition.z),
-            sf::Vector3f(cubePosition.x + cubeSize.x,cubePosition.y + cubeSize.y,cubePosition.z),
-            sf::Vector3f(cubePosition.x,cubePosition.y,cubePosition.z + cubeSize.z),
-            sf::Vector3f(cubePosition.x + cubeSize.x,cubePosition.y,cubePosition.z + cubeSize.z),
-            sf::Vector3f(cubePosition.x,cubePosition.y + cubeSize.y,cubePosition.z + cubeSize.z),
-            sf::Vector3f(cubePosition.x + cubeSize.x,cubePosition.y + cubeSize.y,cubePosition.z + cubeSize.z)
+        const float origin[2] = {playerPosition.x,playerPosition.y};
+        const float direction[2] = {forward.x,forward.y};
+        const float minimum[2] = {cubePosition.x,cubePosition.y};
+        const float maximum[2] = {
+            cubePosition.x + cubeSize.x,
+            cubePosition.y + cubeSize.y
         };
-        const std::array<std::array<int,2>,12> edges = {{
-            {{0,1}},{{0,2}},{{1,3}},{{2,3}},
-            {{4,5}},{{4,6}},{{5,7}},{{6,7}},
-            {{0,4}},{{1,5}},{{2,6}},{{3,7}}
-        }};
-        std::vector<sf::Vector2f> points;
 
-        for (const auto& edge:edges)
+        float start = -std::numeric_limits<float>::infinity();
+        float end = std::numeric_limits<float>::infinity();
+        for (int axis = 0; axis < 2; ++axis)
         {
-            const sf::Vector3f first = vertices[edge[0]];
-            const sf::Vector3f second = vertices[edge[1]];
-            const float firstDistance = dot(normal,{first.x - playerPosition.x,
-                                                    first.y - playerPosition.y});
-            const float secondDistance = dot(normal,{second.x - playerPosition.x,
-                                                     second.y - playerPosition.y});
+            if (std::abs(direction[axis]) < 1e-6f)
+            {
+                if (origin[axis] < minimum[axis] || origin[axis] > maximum[axis])
+                    return std::nullopt;
+                continue;
+            }
 
-            if (std::abs(firstDistance) < 0.01f)
-            {
-                addPoint(points,{dot(forward,{first.x - playerPosition.x,
-                                              first.y - playerPosition.y}),
-                                 first.z - playerPosition.z});
-            }
-            if (firstDistance * secondDistance < 0)
-            {
-                const float fraction = firstDistance / (firstDistance - secondDistance);
-                const sf::Vector3f intersection = first + (second - first) * fraction;
-                addPoint(points,{dot(forward,{intersection.x - playerPosition.x,
-                                              intersection.y - playerPosition.y}),
-                                 intersection.z - playerPosition.z});
-            }
+            float first = (minimum[axis] - origin[axis]) / direction[axis];
+            float second = (maximum[axis] - origin[axis]) / direction[axis];
+            if (first > second)
+                std::swap(first,second);
+            start = std::max(start,first);
+            end = std::min(end,second);
         }
 
-        const sf::Vector2f center = [&] {
-            sf::Vector2f result(0,0);
-            for (const sf::Vector2f point:points)
-                result += point;
-            if (!points.empty())
-                result /= static_cast<float>(points.size());
-            return result;
-        }();
-        std::sort(points.begin(),points.end(),[&](sf::Vector2f first,sf::Vector2f second) {
-            return std::atan2(first.y - center.y,first.x - center.x)
-                < std::atan2(second.y - center.y,second.x - center.x);
-        });
-        return points;
+        if (start > end)
+            return std::nullopt;
+
+        return CubeSlice{
+            start,
+            end,
+            cubeSize.z
+        };
     }
 
     void renderCubeSlice(
@@ -155,21 +133,22 @@ namespace
         const Cube& cube,
         sf::Vector3f playerPosition,
         float playerAngle,
-        sf::Vector2f screenOffset,
         sf::Color color
     )
     {
-        const std::vector<sf::Vector2f> points = cubeSlice(cube,playerPosition,playerAngle);
-        if (points.size() < 3)
+        const std::optional<CubeSlice> slice = cubeSlice(cube,playerPosition,playerAngle);
+        if (!slice || slice->end <= slice->start)
             return;
 
-        const sf::Vector2f screenCenter = window.getView().getCenter();
-        sf::ConvexShape shape(points.size());
-        for (std::size_t index = 0; index < points.size(); ++index)
-        {
-            shape.setPoint(index,{screenCenter.x + screenOffset.x + points[index].x,
-                                  screenCenter.y - screenOffset.y - points[index].y});
-        }
+        sf::RectangleShape shape({
+            slice->end - slice->start,
+            slice->height
+        });
+        const sf::Vector2f forward = forwardAxis(playerAngle);
+        shape.setPosition({
+            forwardPosition(playerPosition,forward) + slice->start,
+            -(cube.getPosition().z + cube.getSize().z)
+        });
         shape.setFillColor(color);
         window.draw(shape);
     }
@@ -184,6 +163,7 @@ finishCube(),
 player({0,0,0},{0,0}),
 cameraPosition({0,0,0}),
 cameraAngle(0),
+worldView(sf::FloatRect({0.f, 0.f}, Display::virtualResolution)),
 cameraInitialized(false),
 levelIndex(levelIndex),
 instructionsShown(false)
@@ -545,48 +525,50 @@ void LevelState::render(sf::RenderWindow& window)
     const sf::Vector3f playerPosition = player.getPosition();
     const float playerAngle = player.getAngle();
     const sf::Vector2f forward = forwardAxis(playerAngle);
-    const sf::Vector2f playerDisplacement(
-        playerPosition.x - cameraPosition.x,
-        playerPosition.y - cameraPosition.y
-    );
-    const sf::Vector2f screenOffset(
-        dot(forward,playerDisplacement),
-        playerPosition.z - cameraPosition.z
-    );
-    const sf::Vector2f shakenScreenOffset = screenOffset + shakeOffset;
+    worldView.setCenter({
+        forwardPosition(cameraPosition,forward) - shakeOffset.x,
+        -cameraPosition.z - shakeOffset.y
+    });
+    Display::setView(window,worldView);
+
     for (const auto& cube:cubes)
     {
-        renderCubeSlice(window,*cube,playerPosition,playerAngle,shakenScreenOffset,sf::Color(70,110,180));
+        renderCubeSlice(window,*cube,playerPosition,playerAngle,sf::Color(70,110,180));
     }
     for (const auto& spike:spikes)
     {
-        renderCubeSlice(window,*spike,playerPosition,playerAngle,shakenScreenOffset,sf::Color(220,50,50));
+        renderCubeSlice(window,*spike,playerPosition,playerAngle,sf::Color(220,50,50));
     }
 
-    renderCubeSlice(window,*finishCube,playerPosition,playerAngle,shakenScreenOffset,sf::Color(255,210,40));
+    renderCubeSlice(window,*finishCube,playerPosition,playerAngle,sf::Color(255,210,40));
 
     const sf::Vector2f playerSize = player.getSize();
     sf::RectangleShape playerShape({playerSize.x,playerSize.y});
-    const sf::Vector2f screenCenter = window.getView().getCenter();
-    playerShape.setPosition({screenCenter.x + shakenScreenOffset.x,
-                              screenCenter.y - shakenScreenOffset.y - playerSize.y});
+    playerShape.setPosition({
+        forwardPosition(playerPosition,forward),
+        -playerPosition.z - playerSize.y
+    });
     playerShape.setFillColor(sf::Color(240,70,70));
     window.draw(playerShape);
 
+    Display::setView(window,Display::virtualCenter - shakeOffset);
+
     timerText.setString("TIME  " + formatTime(levelTime));
-    timerPanel.setPosition({24.f + shakeOffset.x,24.f + shakeOffset.y});
-    timerText.setPosition({42.f + shakeOffset.x,38.f + shakeOffset.y});
+    timerPanel.setPosition({24.f,24.f});
+    timerText.setPosition({42.f,38.f});
     window.draw(timerPanel);
     window.draw(timerText);
 
     angleText.setString("ANGLE  " + formatAngle(playerAngle) + " deg");
-    anglePanel.setPosition({230.f + shakeOffset.x,24.f + shakeOffset.y});
+    anglePanel.setPosition({230.f,24.f});
     window.draw(anglePanel);
-    angleIndicator.setPosition({325.f + shakeOffset.x,61.f + shakeOffset.y});
+    angleIndicator.setPosition({325.f,61.f});
     angleIndicator.setRotation(sf::degrees(-playerAngle * 180.f / 3.14159265358979323846f));
     window.draw(angleIndicator);
-    angleText.setPosition({246.f + shakeOffset.x,91.f + shakeOffset.y});
+    angleText.setPosition({246.f,91.f});
     window.draw(angleText);
+
+    Display::setView(window,Display::virtualCenter);
 
     if (deathPending)
     {
